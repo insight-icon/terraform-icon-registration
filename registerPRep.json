@@ -1,9 +1,0 @@
-{
-    "name": "Insight-CI",
-    "country": "USA",
-    "city": "A city",
-    "email": "hunter@gmail.com",
-    "website": "https://google.com",
-    "details": "https://storage.cloud.google.com/insight-ci/details.json",
-    "p2pEndpoint": "35.237.82.203:7100"
-}
