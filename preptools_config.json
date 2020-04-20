@@ -1,0 +1,5 @@
+{
+   "url": "https://zicon.net.solidwallet.io",
+   "nid": 80,
+   "keystore": "/home/rob/PycharmProjects/icon/tf-icon/terraform-aws-icon-registration/examples/gcp/../../test/fixtures/keystore/testnet"
+}

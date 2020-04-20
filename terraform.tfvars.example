@@ -1,0 +1,36 @@
+network_name = "mainnet"
+
+// Path needs to be filled in otherwise registration doesn't work
+keystore_path = "/Users/.../Documents/keystore"
+
+organization_name = "Any string - your team name"
+organization_country = "USA" # This needs to be three letter country code per https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
+organization_email = "" # Needs to be real email
+organization_city = "A city " # No qualifiers
+organization_website = "https://google.com" # Needs to begin in https / http - can be google...
+
+// All the logos are complete paths to the image on your local drive
+logo_256 = "/Users/.../logo_256"
+logo_1024 = "/Users/.../logo_1024"
+logo_svg = "/Users/.../logo_svg"
+
+// All of this is optional
+steamit = ""
+twitter = ""
+youtube = ""
+facebook = ""
+github = ""
+reddit = ""
+keybase = ""
+telegram = ""
+
+// If you have already have an IP, you can enter it here / uncomment and a new IP will not be provisioned with the
+// existing IP being brought
+//  ip = "1.2.3.4"
+
+keystore_password = ""
+
+
+// ------------------Details - Doesn't really matter
+server_type = "cloud"
+region = "us-east-1"
