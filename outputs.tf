@@ -6,7 +6,7 @@ output "details_endpoint" {
   value = local.details_endpoint
 }
 
-output "details_values" {
+output "details_content" {
   value = template_file.details.rendered
 }
 

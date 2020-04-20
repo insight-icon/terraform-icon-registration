@@ -110,8 +110,8 @@ No issue is creating limit on this module.
 
 | Name | Description |
 |------|-------------|
+| details\_content | n/a |
 | details\_endpoint | n/a |
-| details\_values | n/a |
 | network\_name | n/a |
 | public\_ip | n/a |
 | registration\_command | n/a |
