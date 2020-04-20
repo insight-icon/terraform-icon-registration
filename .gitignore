@@ -13,5 +13,5 @@ test/fixtures/keys/*
 
 Pipfile.lock
 Pipfile
-#registerPRep.json
-#preptools_config.json
+registerPRep.json
+preptools_config.json
