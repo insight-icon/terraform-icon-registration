@@ -1,11 +1,17 @@
-# terraform-aws-icon-registration
+# terraform-icon-registration
 
 ## Features
 
 This module helps with registering a node on the ICON Blockchain. It is meant to be used by the following cloud specific 
 registration modules:
-- [terraform-icon-aws-registration]
 
+- [terraform-icon-aws-registration](https://github.com/insight-icon/terraform-icon-aws-registration)
+- [terraform-icon-azure-registration](https://github.com/insight-icon/terraform-icon-azure-registration)
+- [terraform-icon-aws-registration](https://github.com/insight-icon/terraform-icon-gcp-registration) - WIP
+- [terraform-icon-packet-registration](https://github.com/insight-icon/terraform-icon-packet-registration) - WIP 
+- [terraform-icon-hetzner-registration](https://github.com/insight-icon/terraform-icon-hetzner-registration) - WIP 
+
+These modules then do the following:
 - Creates an elastic IP that will be your main IP that your node will use to run and applies a number of tags on the
 resource so it can be queried to be attached to instances later
 - Puts the necessary details.json file in a bucket publicly accessible along with logos
@@ -27,41 +33,26 @@ For Terraform v0.12.0+
 
 ```hcl
 module "this" {
-    source = "github.com/insight-infrastructure/terraform-aws-icon-registration.git?ref=v0.1.0"
-    network_name = "testnet"
+  source = "../.."
 
-    // Path needs to be filled in otherwise registration doesn't work
-    //  keystore_path = "/Users/.../Documents/keystore"
+  network_name = "testnet"
 
-    organization_name    = "Insight-CI"
-    organization_country = "USA"
-    # This needs to be three letter country code per https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
-    organization_email = "hunter@gmail.com"
-    # Needs to be real email
-    organization_city = "A city"
-    # No qualifiers
-    organization_website = "https://google.com"
-    # Needs to begin in https / http - can be google...
+  public_ip       = "1.2.3.4"
+  static_endpoint = "https://google.com"
 
-    // All the logos are complete paths to the image on your local drive
-    logo_256 = "/Users/.../logo_256"
-    logo_1024 = "/Users/.../logo_1024"
-    logo_svg = "/Users/.../logo_svg"
+  organization_name    = "Insight-CI"
+  organization_country = "USA"
+  organization_email   = "hunter@gmail.com"
+  organization_city    = "A city"
+  organization_website = "https://google.com"
+  server_type          = "cloud"
 
-    // If you have already have an IP, you can enter it here / uncomment and a new IP will not be provisioned with the
-    // existing IP being brought
-    //  ip = "1.2.3.4"
-    // ------------------Details - Doesn't really matter
-    server_type = "cloud"
-    region      = "us-east-1"
+  keystore_password = var.keystore_password
+  keystore_path     = local.keystore_path
 
-    keystore_password = var.keystore_password
-    keystore_path     = var.keystore_path
-
-    logo_256  = var.logo_256
-    logo_1024 = var.logo_1024
-
-    logo_svg = var.logo_svg
+  logo_256  = local.logo_256
+  logo_1024 = local.logo_1024
+  logo_svg  = local.logo_svg
 }
 ```
 
