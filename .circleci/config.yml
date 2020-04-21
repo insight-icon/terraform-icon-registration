@@ -17,7 +17,6 @@ jobs:
       - go/test
 orbs:
   go: circleci/go@0.2.0
-  node: circleci/node@1.1.6
 version: 2.1
 workflows:
   default:
