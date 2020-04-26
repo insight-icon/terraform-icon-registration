@@ -94,7 +94,6 @@ No issue is creating limit on this module.
 | organization\_name | Any string - your team name | `string` | `""` | no |
 | organization\_website | Needs to begin in https / http - can be google... | `string` | `""` | no |
 | owner | Owner of the infrastructure | `string` | `"insight"` | no |
-| packet\_project\_name | The project name for packet | `string` | `""` | no |
 | public\_ip | Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip | `string` | n/a | yes |
 | reddit | Link to social media account - https://... | `string` | `""` | no |
 | server\_type | Link to social media account - https://... | `string` | `"cloud"` | no |

@@ -77,26 +77,11 @@ class PRepChecker(object):
 
         print(command)
 
-        # subprocess.call(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-        # # result = run(command.split(" "), stdout=PIPE, stderr=PIPE, universal_newlines=True)
-        # # print(result.returncode, result.stdout, result.stderr)
-        p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
-        (output, err) = p.communicate()
-        print(output)
-        print(err)
-        #
-        # ## Wait for date to terminate. Get return returncode ##
-        # p_status = p.wait()
-        # print("Command output : " + str(err))
-        # print("Command exit status/return code : " + p_status)
-        # while True:
-        #     out = p.stderr.read(1)
-        #     if out == '' and p.poll() != None:
-        #         break
-        #     if out != '':
-        #         sys.stdout.write(str(out))
-        #         sys.stdout.flush()
+        p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, err = p.communicate()
+        if err:
+            sys.exit(err)
+        return output
 
 
 if __name__ == "__main__":

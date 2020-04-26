@@ -6,6 +6,13 @@ resource "random_pet" "this" {
   length = 2
 }
 
+locals {
+  nid = var.network_name == "testnet" ? 80 : var.network_name == "mainnet" ? 1 : ""
+  url = var.network_name == "testnet" ? "https://zicon.net.solidwallet.io" : "https://ctz.solidwallet.io/api/v3"
+
+  details_endpoint = "${var.static_endpoint}/details.json"
+}
+
 module "label" {
   source = "github.com/robc-io/terraform-null-label.git?ref=0.16.1"
 
