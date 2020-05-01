@@ -16,6 +16,12 @@
 //  default     = ""
 //}
 
+variable "skip_registration" {
+  description = "Boolean to skip executing registration command"
+  type        = bool
+  default     = false
+}
+
 variable "static_endpoint" {
   description = "Endpoint to host static content"
   type        = string

@@ -98,6 +98,8 @@ resource "local_file" "registerPRep" {
 ###################
 
 resource null_resource "preptools" {
+  count = var.skip_registration ? 0 : 1
+
   provisioner "local-exec" {
     command = <<-EOF
 python3 ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${local_file.registerPRep.filename} ${var.keystore_password}
