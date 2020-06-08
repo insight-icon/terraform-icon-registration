@@ -6,7 +6,8 @@ This module helps with registering a node on the ICON Blockchain. It is meant to
 registration modules:
 
 - [terraform-icon-aws-registration](https://github.com/insight-icon/terraform-icon-aws-registration)
-- [terraform-icon-azure-registration](https://github.com/insight-icon/terraform-icon-azure-registration)
+- [terraform-icon-gcp-registration](https://github.com/insight-icon/terraform-icon-gcp-registration)
+- [terraform-icon-azure-registration](https://github.com/insight-icon/terraform-icon-azure-registration) - WIP
 - [terraform-icon-aws-registration](https://github.com/insight-icon/terraform-icon-gcp-registration) - WIP
 - [terraform-icon-packet-registration](https://github.com/insight-icon/terraform-icon-packet-registration) - WIP 
 - [terraform-icon-hetzner-registration](https://github.com/insight-icon/terraform-icon-hetzner-registration) - WIP 
