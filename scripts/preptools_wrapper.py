@@ -75,8 +75,6 @@ class PRepChecker(object):
             print("updating")
             command = 'yes | preptools setPRep --prep-json %s -k %s -p %s -u %s -n %i' % (register_json, keystore, password, url, nid)
 
-        print(command)
-
         p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, err = p.communicate()
         if err:
