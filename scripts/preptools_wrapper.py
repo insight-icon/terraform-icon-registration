@@ -164,6 +164,5 @@ if __name__ == "__main__":
 
     input_json['operator_password'] = p.operator_wallet_password
     input_json['operator_wallet_path'] = p.operator_wallet_path
-    input_json['output'] = p.output
 
     sys.stdout.write(json.dumps(input_json))
