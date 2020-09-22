@@ -21,6 +21,8 @@ class PRepChecker(object):
                  keystore: str,
                  register_json: str,
                  password: str,
+                 url: str,
+                 nid: int,
                  operator_wallet_path: str = None,
                  operator_wallet_password: str = None,
                  ):
@@ -29,25 +31,27 @@ class PRepChecker(object):
         self.keystore = keystore
         self.register_json = os.path.abspath(register_json)
         self.password = password
+        self.url = url
+        self.nid = nid
         self.operator_wallet_path = operator_wallet_path
         self.operator_wallet_password = operator_wallet_password
 
-    @staticmethod
-    def _get_url(network_name):
-        if network_name not in ['mainnet', 'testnet']:
-            return ValueError('Need to specify network_name -> either mainnet or testnet')
-        if network_name == 'mainnet':
-            url = "https://ctz.solidwallet.io/api/v3"
-            nid = 1
-        elif network_name == 'testnet':
-            url = "https://zicon.net.solidwallet.io/api/v3"
-            nid = 80
-        else:
-            return ValueError('Need to specify network_name -> either mainnet or testnet')
-        return url, nid
+    # @staticmethod
+    # def _get_url(network_name):
+    #     if network_name not in ['mainnet', 'testnet']:
+    #         return ValueError('Need to specify network_name -> either mainnet or testnet')
+    #     if network_name == 'mainnet':
+    #         url = "https://ctz.solidwallet.io/api/v3"
+    #         nid = 1
+    #     elif network_name == 'testnet':
+    #         url = "https://zicon.net.solidwallet.io/api/v3"
+    #         nid = 80
+    #     else:
+    #         return ValueError('Need to specify network_name -> either mainnet or testnet')
+    #     return url, nid
 
     def _get_preps(self, network_name):
-        url, nid = self._get_url(network_name)
+        # url, nid = self._get_url(network_name)
         # Per https://github.com/icon-project/icon-rpc-server/issues/147
         # This call just checks if prep is regisered already
         payload = {
@@ -66,7 +70,9 @@ class PRepChecker(object):
             }
         }
 
-        response = requests.post(url, json=payload).json()
+        self.url = '/'.join([self.url, "api/v3"])
+
+        response = requests.post(self.url, json=payload).json()
         return response
 
     def check_if_exists(self, network_name, address, p2pendpoint):
@@ -115,7 +121,7 @@ class PRepChecker(object):
         self.operator_wallet_address = json.load(codecs.open(self.operator_wallet_path, 'r', 'utf-8-sig'))['address']
 
     def prep_reg(self):
-        url, nid = self._get_url(self.network_name)
+        # url, nid = self._get_url(self.network_name)
 
         if not self.operator_wallet_path:
             self.create_operator_wallet()
@@ -126,12 +132,12 @@ class PRepChecker(object):
 
         if not self.check_if_exists(self.network_name, self.address, p2p_endpoint):
             logging.debug("registering")
-            self.command = 'preptools registerPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
-            self.operator_wallet_address, self.register_json, self.keystore, self.password, url, nid)
+            self.command = 'preptools registerPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %s' % (
+            self.operator_wallet_address, self.register_json, self.keystore, self.password, self.url, self.nid)
         else:
             logging.debug("updating")
-            self.command = 'preptools setPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
-            self.operator_wallet_address, self.register_json, self.keystore, self.password, url, nid)
+            self.command = 'preptools setPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %s' % (
+            self.operator_wallet_address, self.register_json, self.keystore, self.password, self.url, self.nid)
 
         p = subprocess.Popen(self.command.split(' '), stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
@@ -156,8 +162,10 @@ if __name__ == "__main__":
     keystore_path = input_json['keystore_path']
     register_json = input_json['register_json']
     keystore_password = input_json['keystore_password']
+    url = input_json['url']
+    nid = input_json['nid']
 
-    p = PRepChecker(network_name, keystore_path, register_json, keystore_password)
+    p = PRepChecker(network_name, keystore_path, register_json, keystore_password, url, nid)
     p.prep_reg()
 
     input_json['operator_password'] = p.operator_wallet_password

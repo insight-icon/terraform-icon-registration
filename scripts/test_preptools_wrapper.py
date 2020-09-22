@@ -10,7 +10,7 @@ def test_working():
     keystore_path = os.path.abspath(os.path.join("..", "test", "fixtures", "keystore", "testnet"))
     register_json = os.path.abspath(os.path.join("..", "registerPRep.json"))
     keystore_password = "testing1."
-    p = pc.PRepChecker(network_name, keystore_path, register_json, keystore_password)
+    p = pc.PRepChecker(network_name, keystore_path, register_json, keystore_password, "https://zicon.net.solidwallet.io", 80)
     p.prep_reg()
     print(p.operator_wallet_password)
     print(p.output)
@@ -25,7 +25,7 @@ def test_empty():
     keystore_path = os.path.abspath(os.path.join("..", "test", "fixtures", "keystore", "empty"))
     register_json = os.path.abspath(os.path.join("..", "registerPRep.json"))
     keystore_password = "testing1."
-    p = pc.PRepChecker(network_name, keystore_path, register_json, keystore_password)
+    p = pc.PRepChecker(network_name, keystore_path, register_json, keystore_password, "https://zicon.net.solidwallet.io", 80)
     with pytest.raises(ValueError) as e:
         p.prep_reg()
 

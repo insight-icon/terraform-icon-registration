@@ -28,7 +28,7 @@ locals {
 module "defaults" {
   source = "../.."
 
-  network_name = "testnet"
+  network_name = "zicon"
 
   public_ip       = "1.2.3.4"
   static_endpoint = "https://google.com"

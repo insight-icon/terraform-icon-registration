@@ -7,8 +7,22 @@ resource "random_pet" "this" {
 }
 
 locals {
-  nid = var.network_name == "testnet" ? 80 : var.network_name == "mainnet" ? 1 : ""
-  url = var.network_name == "testnet" ? "https://zicon.net.solidwallet.io" : "https://ctz.solidwallet.io/api/v3"
+  nid_map = {
+    mainnet = 1
+    testnet = 2
+    bicon   = 3
+    zicon   = 80
+  }
+
+  url_map = {
+    mainnet = "https://ctz.solidwallet.io"
+    testnet = "https://test-ctz.solidwallet.io"
+    bicon   = "https://bicon.net.solidwallet.io"
+    zicon   = "https://zicon.net.solidwallet.io"
+  }
+
+  nid = local.nid_map[var.network_name]
+  url = local.url_map[var.network_name]
 
   details_endpoint = "${var.static_endpoint}/details.json"
 }
@@ -82,25 +96,6 @@ resource "local_file" "registerPRep" {
 # Register / Update
 ###################
 
-//resource null_resource "preptools" {
-//  count = var.skip_registration ? 0 : 1
-//
-//  provisioner "local-exec" {
-//    command = <<-EOF
-//python3 ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${local_file.registerPRep.filename} ${var.keystore_password}
-//EOF
-//  }
-//  triggers = {
-//    build_always = timestamp()
-//  }
-//}
-
-//locals {
-//  command = <<-EOF
-//python3 ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${local_file.registerPRep.filename} ${var.keystore_password}
-//EOF
-//}
-
 data "external" "preptools" {
   count   = var.skip_registration ? 0 : 1
   program = ["python3", "${path.module}/scripts/preptools_wrapper.py"]
@@ -110,6 +105,8 @@ data "external" "preptools" {
     keystore_path     = var.keystore_path
     register_json     = local_file.registerPRep.filename,
     keystore_password = var.keystore_password
+    url               = local.url
+    nid               = local.nid
   }
 
   depends_on = [local_file.preptools_config, local_file.registerPRep]

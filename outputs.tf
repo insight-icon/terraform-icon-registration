@@ -18,42 +18,18 @@ output "network_name" {
   value = var.network_name
 }
 
-output "registration_command" {
-  value = <<-EOF
-preptools registerPRep \
---url ${local.url} \
---nid ${local.nid} \
-%{if var.keystore_path != ""}--keystore ${var.keystore_path}%{endif} \
-%{if var.organization_name != ""}--name "${var.organization_name}"%{endif} \
-%{if var.organization_country != ""}--country "${var.organization_country}"%{endif} \
-%{if var.organization_city != ""}--city "${var.organization_city}"%{endif} \
-%{if var.organization_email != ""}--email "${var.organization_email}"%{endif} \
-%{if var.organization_website != ""}--website "${var.organization_website}"%{endif} \
---details "${local.details_endpoint}" \
---p2p-endpoint "${var.public_ip}:7100"
-EOF
-}
-
-output "update_registration_command" {
-  value = <<-EOF
-preptools setPRep \
---url ${local.url} \
---nid ${local.nid} \
-%{if var.keystore_path != ""}--keystore ${var.keystore_path}%{endif} \
-%{if var.organization_name != ""}--name "${var.organization_name}"%{endif} \
-%{if var.organization_country != ""}--country "${var.organization_country}"%{endif} \
-%{if var.organization_city != ""}--city "${var.organization_city}"%{endif} \
-%{if var.organization_email != ""}--email "${var.organization_email}"%{endif} \
-%{if var.organization_website != ""}--website "${var.organization_website}"%{endif} \
---details "${local.details_endpoint}" \
---p2p-endpoint "${var.public_ip}:7100"
-EOF
-}
-
 output "operator_password" {
   value = join("", data.external.preptools[0].result.*.operator_password)
 }
 
 output "operator_wallet_path" {
   value = join("", data.external.preptools[0].result.*.operator_wallet_path)
+}
+
+output "url" {
+  value = local.url
+}
+
+output "nid" {
+  value = local.nid
 }
