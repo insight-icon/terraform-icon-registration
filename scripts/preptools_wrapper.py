@@ -98,21 +98,19 @@ class PRepChecker(object):
         return password
 
     def create_operator_wallet(self):
-        wallet_path = os.path.join(os.path.abspath(Path(self.keystore).parent),
-                                   '-'.join([os.path.basename(self.keystore), "operator"]))
 
-        # sys.stdout.write(json.dumps({wallet_path: 'this'}))
-        #
-        # print(wallet_path)
+        if not self.operator_wallet_path:
+            self.operator_wallet_path = os.path.join(os.path.abspath(Path(self.keystore).parent),
+                                   '-'.join([os.path.basename(self.keystore), "operator"]))
         if not self.operator_wallet_password:
             self.operator_wallet_password = self._generate_random_password()
 
-        self.operator_wallet_path = wallet_path
-        if os.path.exists(wallet_path):
-            logging.debug("Operator wallet already exists at path : " + wallet_path)
-        else:
-            content = KeyWallet.create()
-            content.store(self.operator_wallet_path, self.operator_wallet_password)
+        if os.path.exists(self.operator_wallet_path):
+            logging.debug("Operator wallet already exists at path : " + self.operator_wallet_path)
+            os.remove(self.operator_wallet_path)
+
+        content = KeyWallet.create()
+        content.store(self.operator_wallet_path, self.operator_wallet_password)
 
         self.operator_wallet_address = json.load(codecs.open(self.operator_wallet_path, 'r', 'utf-8-sig'))['address']
 
