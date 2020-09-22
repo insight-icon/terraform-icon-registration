@@ -7,9 +7,8 @@ import os
 from pathlib import Path
 
 from iconsdk.wallet.wallet import KeyWallet
+import logging
 
-
-import random
 
 # import sys
 # from pprint import pprint
@@ -28,7 +27,7 @@ class PRepChecker(object):
 
         self.network_name = network_name
         self.keystore = keystore
-        self.register_json = register_json
+        self.register_json = os.path.abspath(register_json)
         self.password = password
         self.operator_wallet_path = operator_wallet_path
         self.operator_wallet_password = operator_wallet_password
@@ -83,7 +82,7 @@ class PRepChecker(object):
         # for i in range(0, len(response['result']['preps'])):
         #     if response['result']['preps'][i]['address'] == address:
         #         exists = True
-        #         print("Wallet already exists")
+        #         logging.debug("Wallet already exists")
         #     if response['result']['preps'][i]['p2pEndpoint'] == p2pendpoint:
         #         if response['result']['preps'][i]['address'] != address:
         #             sys.exit('You are registering an IP address that is already registered to another prep. Exiting')
@@ -94,20 +93,23 @@ class PRepChecker(object):
         import string
 
         special_chars = "%&'()*+,-./:;<=>?@["*2
-        password = ''.join([random.choice(string.ascii_letters + string.digits + special_chars ) for _ in range(12)])
-        print("The operator wallet password is: " + password)
+        password = r''.join([random.choice(string.ascii_letters + string.digits + special_chars ) for _ in range(12)])
+        logging.debug("The operator wallet password is: " + password)
         return password
 
     def create_operator_wallet(self):
         wallet_path = os.path.join(os.path.abspath(Path(self.keystore).parent),
-                                   '-'.join(os.path.basename(self.keystore)), "-operator")
+                                   '-'.join([os.path.basename(self.keystore), "-operator"]))
 
+        # sys.stdout.write(json.dumps({wallet_path: 'this'}))
+        #
+        # print(wallet_path)
         if not self.operator_wallet_password:
             self.operator_wallet_password = self._generate_random_password()
 
         self.operator_wallet_path = wallet_path
         if os.path.exists(wallet_path):
-            print("Operator wallet already exists at path : " + wallet_path)
+            logging.debug("Operator wallet already exists at path : " + wallet_path)
         else:
             content = KeyWallet.create()
             content.store(self.operator_wallet_path, self.operator_wallet_password)
@@ -125,23 +127,53 @@ class PRepChecker(object):
             p2p_endpoint = json.load(f)['p2pEndpoint']
 
         if not self.check_if_exists(self.network_name, self.address, p2p_endpoint):
-            print("registering")
-            command = 'yes | preptools registerPRep --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
+            logging.debug("registering")
+            command = 'preptools registerPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
             self.operator_wallet_address, self.register_json, self.keystore, self.password, url, nid)
         else:
-            print("updating")
-            command = 'yes | preptools setPRep --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
+            logging.debug("updating")
+            command = 'preptools setPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
             self.operator_wallet_address, self.register_json, self.keystore, self.password, url, nid)
 
-        p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
+        p = subprocess.Popen(command.split(' '), shell=True, stderr=subprocess.PIPE)
+        # p = subprocess.Popen(command.split(' '), stderr=subprocess.PIPE)
         (output, err) = p.communicate()
-        print(output)
+        logging.debug(output)
+        #
+        # output = {
+        #     'operator_wallet_address': self.operator_wallet_address,
+        #     'operator_wallet_password': self.operator_wallet_password,
+        #     'register_json': self.register_json,
+        #     'url': url,
+        #     'nid': nid,
+        #     'output': output,
+        #     'err': err,
+        # }
+        # return output
+
+    # def main(self):
+
 
 
 if __name__ == "__main__":
-    network_name = sys.argv[1]
-    keystore_path = sys.argv[2]
-    register_json = sys.argv[3]
-    keystore_password = sys.argv[4]
+    lines = {x.strip() for x in sys.stdin}
+    for line in lines:
+        if line:
+            input_json = json.loads(line)
+
+    network_name = input_json['network_name']
+    keystore_path = input_json['keystore_path']
+    register_json = input_json['register_json']
+    keystore_password = input_json['keystore_password']
+
     p = PRepChecker(network_name, keystore_path, register_json, keystore_password)
     p.prep_reg()
+
+    input_json['operator_password'] = p.operator_wallet_password
+    input_json['operator_wallet_path'] = p.operator_wallet_path
+
+    # sys.stdout.write(json.dumps({'password': 'this1'}))
+    sys.stdout.write(json.dumps(input_json))
+
+
+

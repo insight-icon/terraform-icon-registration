@@ -47,3 +47,7 @@ module "defaults" {
   logo_1024 = local.logo_1024
   logo_svg  = local.logo_svg
 }
+
+output "operator_wallet_path" {
+  value = module.defaults.operator_wallet_path
+}

@@ -49,3 +49,11 @@ preptools setPRep \
 --p2p-endpoint "${var.public_ip}:7100"
 EOF
 }
+
+output "operator_password" {
+  value = join("", data.external.preptools[0].result.*.operator_password)
+}
+
+output "operator_wallet_path" {
+  value = join("", data.external.preptools[0].result.*.operator_wallet_path)
+}

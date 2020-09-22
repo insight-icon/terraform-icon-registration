@@ -82,16 +82,34 @@ resource "local_file" "registerPRep" {
 # Register / Update
 ###################
 
-resource null_resource "preptools" {
-  count = var.skip_registration ? 0 : 1
+//resource null_resource "preptools" {
+//  count = var.skip_registration ? 0 : 1
+//
+//  provisioner "local-exec" {
+//    command = <<-EOF
+//python3 ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${local_file.registerPRep.filename} ${var.keystore_password}
+//EOF
+//  }
+//  triggers = {
+//    build_always = timestamp()
+//  }
+//}
 
-  provisioner "local-exec" {
-    command = <<-EOF
-python3 ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${local_file.registerPRep.filename} ${var.keystore_password}
-EOF
-  }
-  triggers = {
-    build_always = timestamp()
+//locals {
+//  command = <<-EOF
+//python3 ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${local_file.registerPRep.filename} ${var.keystore_password}
+//EOF
+//}
+
+data "external" "preptools" {
+  count   = var.skip_registration ? 0 : 1
+  program = ["python3", "${path.module}/scripts/preptools_wrapper.py"]
+
+  query = {
+    network_name      = var.network_name,
+    keystore_path     = var.keystore_path
+    register_json     = local_file.registerPRep.filename,
+    keystore_password = var.keystore_password
   }
 }
 

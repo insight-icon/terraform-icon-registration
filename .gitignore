@@ -15,3 +15,5 @@ Pipfile.lock
 Pipfile
 registerPRep.json
 preptools_config.json
+
+testnet--operator

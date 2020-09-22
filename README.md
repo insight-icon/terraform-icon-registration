@@ -69,8 +69,8 @@ No issue is creating limit on this module.
 
 | Name | Version |
 |------|---------|
+| external | n/a |
 | local | n/a |
-| null | n/a |
 | random | n/a |
 | template | n/a |
 
@@ -114,6 +114,8 @@ No issue is creating limit on this module.
 | details\_content | n/a |
 | details\_endpoint | n/a |
 | network\_name | n/a |
+| operator\_password | n/a |
+| operator\_wallet\_path | n/a |
 | public\_ip | n/a |
 | registration\_command | n/a |
 | registration\_json | n/a |
