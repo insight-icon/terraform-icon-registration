@@ -99,7 +99,7 @@ class PRepChecker(object):
 
     def create_operator_wallet(self):
         wallet_path = os.path.join(os.path.abspath(Path(self.keystore).parent),
-                                   '-'.join([os.path.basename(self.keystore), "-operator"]))
+                                   '-'.join([os.path.basename(self.keystore), "operator"]))
 
         # sys.stdout.write(json.dumps({wallet_path: 'this'}))
         #
