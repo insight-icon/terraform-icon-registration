@@ -128,31 +128,24 @@ class PRepChecker(object):
 
         if not self.check_if_exists(self.network_name, self.address, p2p_endpoint):
             logging.debug("registering")
-            command = 'preptools registerPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
+            self.command = 'preptools registerPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
             self.operator_wallet_address, self.register_json, self.keystore, self.password, url, nid)
         else:
             logging.debug("updating")
-            command = 'preptools setPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
+            self.command = 'preptools setPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %i' % (
             self.operator_wallet_address, self.register_json, self.keystore, self.password, url, nid)
 
-        p = subprocess.Popen(command.split(' '), shell=True, stderr=subprocess.PIPE)
+        p = subprocess.Popen(self.command.split(' '), stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+
         # p = subprocess.Popen(command.split(' '), stderr=subprocess.PIPE)
-        (output, err) = p.communicate()
-        logging.debug(output)
-        #
-        # output = {
-        #     'operator_wallet_address': self.operator_wallet_address,
-        #     'operator_wallet_password': self.operator_wallet_password,
-        #     'register_json': self.register_json,
-        #     'url': url,
-        #     'nid': nid,
-        #     'output': output,
-        #     'err': err,
-        # }
-        # return output
+        (self.output, self.err) = p.communicate()
+        logging.debug(self.output)
 
-    # def main(self):
+        if b'error' in self.output:
+            raise ValueError(self.output)
 
+        if self.err:
+            raise ValueError(self.err)
 
 
 if __name__ == "__main__":
@@ -171,9 +164,6 @@ if __name__ == "__main__":
 
     input_json['operator_password'] = p.operator_wallet_password
     input_json['operator_wallet_path'] = p.operator_wallet_path
+    input_json['output'] = p.output
 
-    # sys.stdout.write(json.dumps({'password': 'this1'}))
     sys.stdout.write(json.dumps(input_json))
-
-
-

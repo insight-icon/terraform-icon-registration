@@ -16,4 +16,4 @@ Pipfile
 registerPRep.json
 preptools_config.json
 
-testnet--operator
+*-operator
