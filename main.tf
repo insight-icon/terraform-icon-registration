@@ -111,5 +111,7 @@ data "external" "preptools" {
     register_json     = local_file.registerPRep.filename,
     keystore_password = var.keystore_password
   }
+
+  depends_on = [local_file.preptools_config, local_file.registerPRep]
 }
 
