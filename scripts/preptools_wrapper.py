@@ -99,7 +99,8 @@ class PRepChecker(object):
         return password
 
     def create_operator_wallet(self):
-        wallet_path = os.path.join(os.path.abspath(Path(self.keystore).parent), "operator_keystore")
+        wallet_path = os.path.join(os.path.abspath(Path(self.keystore).parent),
+                                   '-'.join(os.path.basename(self.keystore)), "-operator")
 
         if not self.operator_wallet_password:
             self.operator_wallet_password = self._generate_random_password()
