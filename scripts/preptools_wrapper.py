@@ -98,7 +98,7 @@ class PRepChecker(object):
         import random
         import string
 
-        special_chars = "%&'()*+,-./:;<=>?@["*2
+        special_chars = "%&()*+,-.:;<=>?@["*2
         password = r''.join([random.choice(string.ascii_letters + string.digits + special_chars ) for _ in range(12)])
         logging.debug("The operator wallet password is: " + password)
         return password
