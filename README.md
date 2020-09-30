@@ -89,6 +89,8 @@ No issue is creating limit on this module.
 | logo\_svg | Path to svg logo | `string` | `""` | no |
 | namespace | The namespace to deploy into | `string` | `"icon"` | no |
 | network\_name | mainnet or testnet - Don't mess this up!!!!!!!! | `string` | `"mainnet"` | no |
+| operator\_keystore\_password | the path to your keystore | `string` | `""` | no |
+| operator\_keystore\_path | The keystore password | `string` | `""` | no |
 | organization\_city | No qualifiers | `string` | `""` | no |
 | organization\_country | This needs to be three letter country code per https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3 | `string` | `""` | no |
 | organization\_email | Needs to be real email | `string` | `""` | no |

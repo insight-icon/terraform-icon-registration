@@ -96,18 +96,25 @@ resource "local_file" "registerPRep" {
 # Register / Update
 ###################
 
+locals {
+  operator_inputs = var.operator_keystore_password == "" ? {
+    operator_keystore_password = var.operator_keystore_password
+    operator_keystore_path     = var.operator_keystore_path
+  } : {}
+}
+
 data "external" "preptools" {
   count   = var.skip_registration ? 0 : 1
   program = ["python3", "${path.module}/scripts/preptools_wrapper.py"]
 
-  query = {
+  query = merge({
     network_name      = var.network_name,
     keystore_path     = var.keystore_path
     register_json     = local_file.registerPRep.filename,
     keystore_password = var.keystore_password
     url               = local.url
     nid               = local.nid
-  }
+  }, local.operator_inputs)
 
   depends_on = [local_file.preptools_config, local_file.registerPRep]
 }

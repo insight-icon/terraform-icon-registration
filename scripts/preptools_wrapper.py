@@ -165,7 +165,24 @@ if __name__ == "__main__":
     url = input_json['url']
     nid = input_json['nid']
 
-    p = PRepChecker(network_name, keystore_path, register_json, keystore_password, url, nid)
+    if 'operator_keystore_password' in input_json:
+        operator_keystore_password = input_json['operator_keystore_password']
+    else:
+        operator_keystore_password = None
+
+    if 'operator_keystore_path' in input_json:
+        operator_keystore_path = input_json['operator_keystore_path']
+    else:
+        operator_keystore_path = None
+
+    p = PRepChecker(network_name,
+                    keystore_path,
+                    register_json,
+                    keystore_password,
+                    url,
+                    nid,
+                    operator_keystore_password,
+                    operator_keystore_path)
     p.prep_reg()
 
     input_json['operator_password'] = p.operator_wallet_password

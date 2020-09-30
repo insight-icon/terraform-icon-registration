@@ -1,20 +1,3 @@
-//variable "cloud_provider" {
-//  description = "The cloud procider you are running on"
-//  type        = string
-//  default     = "aws"
-//}
-
-//variable "website_endpoint" {
-//  description = "Endpoint you keep your details on - empty to create"
-//  type        = string
-//  default     = ""
-//}
-
-//variable "registration_details_endpoint" {
-//  description = "the endpoint with the details for registration - leave empty to default to cloud provider"
-//  type        = string
-//  default     = ""
-//}
 
 variable "skip_registration" {
   description = "Boolean to skip executing registration command"
@@ -26,19 +9,6 @@ variable "static_endpoint" {
   description = "Endpoint to host static content"
   type        = string
 }
-
-
-//variable "bucket_name" {
-//  description = "The bucket name for static content - blank for team name"
-//  type        = string
-//  default     = ""
-//}
-
-//variable "tags" {
-//  description = "Additional tags to include"
-//  type        = map(string)
-//  default     = {}
-//}
 
 ########
 # Label
@@ -187,3 +157,14 @@ variable "keystore_password" {
   type        = string
 }
 
+variable "operator_keystore_password" {
+  description = "the path to your keystore"
+  type        = string
+  default     = ""
+}
+
+variable "operator_keystore_path" {
+  description = "The keystore password"
+  type        = string
+  default     = ""
+}
