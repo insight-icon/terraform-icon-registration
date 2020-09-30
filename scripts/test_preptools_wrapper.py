@@ -21,7 +21,7 @@ def test_working():
 def test_empty():
     """Test working."""
 
-    network_name = "testnet"
+    network_name = "zicon"
     keystore_path = os.path.abspath(os.path.join("..", "test", "fixtures", "keystore", "empty"))
     register_json = os.path.abspath(os.path.join("..", "registerPRep.json"))
     keystore_password = "testing1."
@@ -31,3 +31,14 @@ def test_empty():
 
     assert e
 
+def test_invalid_uri():
+    """Test not working."""
+    network_name = "zicon"
+    keystore_path = os.path.abspath(os.path.join("..", "test", "fixtures", "keystore", "empty"))
+    register_json = os.path.abspath(os.path.join("..", "test", "fixtures", "registerPRep-invalid.json"))
+    keystore_password = "testing1."
+    p = pc.PRepChecker(network_name, keystore_path, register_json, keystore_password, "https://zicon.net.solidwallet.io", 80)
+    with pytest.raises(ValueError) as e:
+        p.prep_reg()
+
+    assert e

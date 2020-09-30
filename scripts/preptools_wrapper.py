@@ -148,6 +148,9 @@ class PRepChecker(object):
         if b'error' in self.output:
             raise ValueError(self.output)
 
+        if b'Invalid uri format' in self.output:
+            raise ValueError(self.output)
+
         if self.err:
             raise ValueError(self.err)
 
