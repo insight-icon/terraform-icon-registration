@@ -2,10 +2,6 @@ terraform {
   required_version = ">= 0.12"
 }
 
-resource "random_pet" "this" {
-  length = 2
-}
-
 locals {
   nid_map = {
     mainnet = 1

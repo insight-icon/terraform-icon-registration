@@ -71,7 +71,6 @@ No issue is creating limit on this module.
 |------|---------|
 | external | n/a |
 | local | n/a |
-| random | n/a |
 | template | n/a |
 
 ## Inputs
