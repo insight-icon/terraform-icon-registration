@@ -145,11 +145,15 @@ class PRepChecker(object):
         (self.output, self.err) = p.communicate()
         logging.debug(self.output)
 
-        if b'error' in self.output:
-            raise ValueError(self.output)
-
-        if b'Invalid uri format' in self.output:
-            raise ValueError(self.output)
+        errors = [b'error', b'Invalid uri format', b'Exception']
+        for e in errors:
+            if e in self.output:
+                raise ValueError(self.output)
+        # if b'error' in self.output:
+        #     raise ValueError(self.output)
+        #
+        # if b'Invalid uri format' in self.output:
+        #     raise ValueError(self.output)
 
         if self.err:
             raise ValueError(self.err)
