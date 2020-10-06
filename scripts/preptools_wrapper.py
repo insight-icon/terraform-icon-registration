@@ -23,8 +23,8 @@ class PRepChecker(object):
                  password: str,
                  url: str,
                  nid: int,
-                 operator_wallet_path: str = None,
-                 operator_wallet_password: str = None,
+                 operator_keystore_path: str = None,
+                 operator_keystore_password: str = None,
                  ):
 
         self.network_name = network_name
@@ -33,8 +33,9 @@ class PRepChecker(object):
         self.password = password
         self.url = url
         self.nid = nid
-        self.operator_wallet_path = operator_wallet_path
-        self.operator_wallet_password = operator_wallet_password
+        self.operator_keystore_path = operator_keystore_path
+        self.operator_keystore_password = operator_keystore_password
+        self.operator_wallet_address = None
 
     # @staticmethod
     # def _get_url(network_name):
@@ -103,28 +104,33 @@ class PRepChecker(object):
         logging.debug("The operator wallet password is: " + password)
         return password
 
+    def get_keystore_address(self):
+        self.operator_wallet_address = json.load(codecs.open(self.operator_keystore_path, 'r', 'utf-8-sig'))['address']
+
+
     def create_operator_wallet(self):
 
-        if not self.operator_wallet_path:
-            self.operator_wallet_path = os.path.join(os.path.abspath(Path(self.keystore).parent),
+        if not self.operator_keystore_path:
+            self.operator_keystore_path = os.path.join(os.path.abspath(Path(self.keystore).parent),
                                    '-'.join([os.path.basename(self.keystore), "operator"]))
-        if not self.operator_wallet_password:
-            self.operator_wallet_password = self._generate_random_password()
+        if not self.operator_keystore_password:
+            self.operator_keystore_password = self._generate_random_password()
 
-        if os.path.exists(self.operator_wallet_path):
-            logging.debug("Operator wallet already exists at path : " + self.operator_wallet_path)
-            os.remove(self.operator_wallet_path)
+        if os.path.exists(self.operator_keystore_path):
+            logging.debug("Operator wallet already exists at path : " + self.operator_keystore_path)
+            os.remove(self.operator_keystore_path)
 
         content = KeyWallet.create()
-        content.store(self.operator_wallet_path, self.operator_wallet_password)
+        content.store(self.operator_keystore_path, self.operator_keystore_password)
 
-        self.operator_wallet_address = json.load(codecs.open(self.operator_wallet_path, 'r', 'utf-8-sig'))['address']
+        # self.operator_wallet_address = json.load(codecs.open(self.operator_keystore_path, 'r', 'utf-8-sig'))['address']
 
     def prep_reg(self):
         # url, nid = self._get_url(self.network_name)
 
-        if not self.operator_wallet_path:
+        if not self.operator_keystore_path:
             self.create_operator_wallet()
+        self.get_keystore_address()
 
         self.address = json.load(codecs.open(self.keystore, 'r', 'utf-8-sig'))['address']
         with open(self.register_json, 'r') as f:
@@ -192,7 +198,7 @@ if __name__ == "__main__":
                     operator_keystore_path)
     p.prep_reg()
 
-    input_json['operator_password'] = p.operator_wallet_password
-    input_json['operator_wallet_path'] = p.operator_wallet_path
+    input_json['operator_password'] = p.operator_keystore_password
+    input_json['operator_keystore_path'] = p.operator_keystore_path
 
     sys.stdout.write(json.dumps(input_json))
