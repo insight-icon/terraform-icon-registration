@@ -198,7 +198,7 @@ if __name__ == "__main__":
                     operator_keystore_path)
     p.prep_reg()
 
-    input_json['operator_password'] = p.operator_keystore_password
+    input_json['operator_keystore_password'] = p.operator_keystore_password
     input_json['operator_keystore_path'] = p.operator_keystore_path
 
     sys.stdout.write(json.dumps(input_json))
