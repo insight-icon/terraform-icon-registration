@@ -19,11 +19,11 @@ output "network_name" {
 }
 
 output "operator_password" {
-  value = join("", data.external.preptools[0].result.*.operator_password)
+  value = join("", data.external.preptools[0].result.*.operator_keystore_password)
 }
 
 output "operator_wallet_path" {
-  value = join("", data.external.preptools[0].result.*.operator_wallet_path)
+  value = join("", data.external.preptools[0].result.*.operator_keystore_path)
 }
 
 output "url" {
