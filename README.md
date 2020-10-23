@@ -116,8 +116,8 @@ No issue is creating limit on this module.
 | details\_endpoint | n/a |
 | network\_name | n/a |
 | nid | n/a |
-| operator\_password | n/a |
-| operator\_wallet\_path | n/a |
+| operator\_keystore\_password | n/a |
+| operator\_keystore\_path | n/a |
 | public\_ip | n/a |
 | registration\_json | n/a |
 | url | n/a |
