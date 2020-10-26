@@ -40,6 +40,9 @@ module "defaults" {
   organization_website = "https://google.com"
   server_type          = "cloud"
 
+  operator_keystore_path     = "${local.keystore_path}-operator"
+  operator_keystore_password = "dkjlkdsj"
+
   keystore_password = var.keystore_password
   keystore_path     = local.keystore_path
 
@@ -48,6 +51,10 @@ module "defaults" {
   logo_svg  = local.logo_svg
 }
 
+output "operator_keystore_password" {
+  value = module.defaults.operator_keystore_password
+}
+
 output "operator_wallet_path" {
-  value = module.defaults.operator_wallet_path
+  value = module.defaults.operator_keystore_path
 }

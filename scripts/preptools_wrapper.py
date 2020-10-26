@@ -115,14 +115,12 @@ class PRepChecker(object):
                                    '-'.join([os.path.basename(self.keystore), "operator"]))
         if not self.operator_keystore_password:
             self.operator_keystore_password = self._generate_random_password()
+            content = KeyWallet.create()
+            content.store(self.operator_keystore_path, self.operator_keystore_password)
 
-        if os.path.exists(self.operator_keystore_path):
-            logging.debug("Operator wallet already exists at path : " + self.operator_keystore_path)
-            os.remove(self.operator_keystore_path)
-
-        content = KeyWallet.create()
-        content.store(self.operator_keystore_path, self.operator_keystore_password)
-
+        # if os.path.exists(self.operator_keystore_path):
+        #     logging.debug("Operator wallet already exists at path : " + self.operator_keystore_path)
+        #     # os.remove(self.operator_keystore_path)
         # self.operator_wallet_address = json.load(codecs.open(self.operator_keystore_path, 'r', 'utf-8-sig'))['address']
 
     def prep_reg(self):
@@ -194,8 +192,8 @@ if __name__ == "__main__":
                     keystore_password,
                     url,
                     nid,
-                    operator_keystore_password,
-                    operator_keystore_path)
+                    operator_keystore_password=operator_keystore_password,
+                    operator_keystore_path=operator_keystore_path)
     p.prep_reg()
 
     input_json['operator_keystore_password'] = p.operator_keystore_password

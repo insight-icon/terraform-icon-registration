@@ -93,7 +93,7 @@ resource "local_file" "registerPRep" {
 ###################
 
 locals {
-  operator_inputs = var.operator_keystore_password == "" ? {
+  operator_inputs = var.operator_keystore_password != "" ? {
     operator_keystore_password = var.operator_keystore_password
     operator_keystore_path     = var.operator_keystore_path
   } : {}
