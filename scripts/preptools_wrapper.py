@@ -136,12 +136,14 @@ class PRepChecker(object):
 
         if not self.check_if_exists(self.network_name, self.address, p2p_endpoint):
             logging.debug("registering")
-            self.command = 'preptools registerPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %s' % (
+            self.command = 'preptools registerPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %s --step-limit 0x50000000' % (
             self.operator_wallet_address, self.register_json, self.keystore, self.password, self.url, self.nid)
         else:
-            logging.debug("updating")
-            self.command = 'preptools setPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %s' % (
+            logging.debug("updating") # --step-limit 0x50000000
+            self.command = 'preptools setPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %s --step-limit 0x50000000' % (
             self.operator_wallet_address, self.register_json, self.keystore, self.password, self.url, self.nid)
+
+        print(self.command)
 
         p = subprocess.Popen(self.command.split(' '), stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
