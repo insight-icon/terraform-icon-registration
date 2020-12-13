@@ -142,9 +142,7 @@ class PRepChecker(object):
             logging.debug("updating") # --step-limit 0x50000000
             self.command = 'preptools setPRep --yes --node-address %s --prep-json %s -k %s -p %s -u %s -n %s --step-limit 0x50000000' % (
             self.operator_wallet_address, self.register_json, self.keystore, self.password, self.url, self.nid)
-
-        print(self.command)
-
+        # print(self.command)
         p = subprocess.Popen(self.command.split(' '), stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
         # p = subprocess.Popen(command.split(' '), stderr=subprocess.PIPE)
